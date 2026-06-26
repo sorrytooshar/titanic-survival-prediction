@@ -1,29 +1,40 @@
 # Titanic Survival Prediction
 
-A machine learning classification project that predicts whether a passenger survived the Titanic disaster based on demographic and travel-related features. This project demonstrates a complete supervised machine learning workflow, including exploratory data analysis, data preprocessing, feature engineering, model training, and performance evaluation.
+An end-to-end machine learning classification project that predicts whether a passenger survived the Titanic disaster based on passenger demographics and travel information.
+
+This project demonstrates the complete machine learning workflow, including exploratory data analysis, data preprocessing, model training, and model comparison using multiple classification algorithms.
 
 ---
 
 ## Project Overview
 
-The objective of this project is to build a classification model capable of predicting passenger survival using information such as age, passenger class, fare, family size, and embarkation port.
+The objective of this project is to build a classification model capable of predicting passenger survival using the Titanic dataset from Kaggle.
 
-The project follows an end-to-end machine learning pipeline, beginning with data exploration and ending with model evaluation using multiple classification metrics.
+The project covers:
+
+- Exploratory Data Analysis (EDA)
+- Data Cleaning
+- Missing Value Imputation
+- Categorical Feature Encoding
+- Train-Test Split
+- Model Training
+- Model Evaluation
+- Model Comparison
 
 ---
 
 ## Dataset
 
-**Dataset:** Titanic - Machine Learning from Disaster (Kaggle)
+**Source:** Kaggle - Titanic: Machine Learning from Disaster
 
-The dataset contains information for **891 passengers**, including:
+The dataset contains **891 passenger records** with features such as:
 
 - Passenger Class
 - Age
 - Sex
 - Fare
-- Number of Siblings/Spouses Aboard
-- Number of Parents/Children Aboard
+- Number of Siblings/Spouses (SibSp)
+- Number of Parents/Children (Parch)
 - Embarkation Port
 - Survival Status (Target Variable)
 
@@ -31,19 +42,17 @@ The dataset contains information for **891 passengers**, including:
 
 ## Exploratory Data Analysis
 
-Some important insights discovered during EDA:
+Some key observations:
 
-- Dataset contains **891 passengers**
-- **342 passengers survived**
-- Female passengers had a significantly higher survival rate than males.
-- First-class passengers showed the highest survival rate.
+- Total passengers: **891**
+- Total survivors: **342**
+- Female passengers had significantly higher survival rates than males.
+- First-class passengers had the highest survival rate.
 - The 20–30 age group contained the largest number of survivors.
-- Missing values were identified before model training:
-  - Cabin – 687 missing values
-  - Age – 177 missing values
-  - Embarked – 2 missing values
-
-Several visualizations were created to better understand feature distributions and relationships with survival.
+- Missing values identified:
+  - Cabin – 687
+  - Age – 177
+  - Embarked – 2
 
 ---
 
@@ -51,66 +60,64 @@ Several visualizations were created to better understand feature distributions a
 
 The following preprocessing steps were performed:
 
-- Removed unnecessary columns:
-  - PassengerId
-  - Name
-  - Ticket
-  - Cabin
+### Missing Value Handling
 
-- Imputed missing values:
-  - Age → Median
-  - Embarked → Most Frequent Value
+- Age → Median Imputation
+- Embarked → Most Frequent Value
 
-- One-Hot Encoded categorical variables:
-  - Sex
-  - Embarked
+### Removed Columns
 
-- Split the dataset into training and testing sets using an 80:20 ratio.
+- PassengerId
+- Name
+- Ticket
+- Cabin
 
----
+### Encoding
 
-## Model
+One-Hot Encoding was applied to:
 
-The final model was trained using **XGBoost Classifier**.
+- Sex
+- Embarked
 
-### Why XGBoost?
+### Data Splitting
 
-XGBoost is an ensemble boosting algorithm that combines multiple decision trees to improve predictive performance while reducing overfitting. It is widely used in structured/tabular machine learning problems because of its high accuracy and efficiency.
+The dataset was divided into training and testing sets using an 80:20 train-test split.
 
 ---
 
-## Model Evaluation
+## Models Trained
 
-The model achieved:
+Three machine learning models were trained and evaluated using identical preprocessing.
 
-- **Accuracy:** **84%**
+| Model                    | Accuracy      |
+| ------------------------ | ------------- |
+| Logistic Regression      | **79.89%**    |
+| XGBoost Classifier       | **84.36%**    |
+| Random Forest Classifier | **84.92%** ⭐ |
 
-Confusion Matrix:
+Random Forest achieved the highest accuracy on the test set.
 
-```text
-[[102   8]
- [ 20  49]]
-```
+---
 
-Classification Report:
+## Evaluation Metrics
 
-| Metric    | Class 0 | Class 1 |
-| --------- | ------- | ------- |
-| Precision | 0.84    | 0.86    |
-| Recall    | 0.93    | 0.71    |
-| F1 Score  | 0.88    | 0.78    |
+The models were evaluated using:
 
-### Interpretation
+- Accuracy
+- Confusion Matrix
+- Precision
+- Recall
+- F1-Score
 
-The model performs well in predicting passengers who did not survive while maintaining good precision for predicting survivors. The lower recall for the survivor class indicates that some surviving passengers are still misclassified, providing opportunities for further feature engineering and model improvement.
+These metrics provide a more comprehensive evaluation than accuracy alone, especially for classification tasks.
 
 ---
 
 ## Technologies Used
 
 - Python
-- NumPy
 - Pandas
+- NumPy
 - Matplotlib
 - Seaborn
 - Scikit-learn
@@ -122,22 +129,52 @@ The model performs well in predicting passengers who did not survive while maint
 ## Skills Demonstrated
 
 - Exploratory Data Analysis (EDA)
-- Missing Value Handling
 - Data Cleaning
-- Feature Encoding
-- Train-Test Split
-- Classification
+- Missing Value Imputation
+- One-Hot Encoding
+- Machine Learning Pipelines
+- Logistic Regression
+- Random Forest
 - XGBoost
-- Model Evaluation
-- Confusion Matrix Analysis
-- Precision, Recall and F1-Score Interpretation
+- Classification Metrics
+- Confusion Matrix Interpretation
+- Model Comparison
+
+---
+
+## Project Structure
+
+```
+Titanic-Survival-Prediction/
+│
+├── data/
+│   ├── train.csv
+│   └── test.csv
+│
+├── notebooks/
+│   ├── 01_eda.ipynb
+│   └── 02_preprocessing_and_models.ipynb
+│
+├── README.md
+└── requirements.txt
+```
 
 ---
 
 ## Future Improvements
 
-- Compare Logistic Regression, Random Forest and XGBoost.
-- Perform feature engineering (Family Size, IsAlone, Title extraction).
-- Tune hyperparameters using GridSearchCV or RandomizedSearchCV.
-- Perform cross-validation for more robust model evaluation.
-- Deploy the trained model as a web application.
+This project represents the baseline implementation.
+
+Planned improvements include:
+
+- Feature Engineering (Family Size, IsAlone, Passenger Title, Deck Extraction)
+- Hyperparameter Tuning
+- Cross-Validation
+- Model Explainability using Feature Importance
+- Final model optimization after feature engineering
+
+---
+
+## Results
+
+Among the baseline models, **Random Forest Classifier** achieved the highest accuracy (**84.92%**) while maintaining strong precision and recall. Future iterations of the project will focus on feature engineering and model optimization to further improve predictive performance.
