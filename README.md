@@ -1,180 +1,157 @@
-# Titanic Survival Prediction
+# 🚢 Titanic Survival Prediction
 
-An end-to-end machine learning classification project that predicts whether a passenger survived the Titanic disaster based on passenger demographics and travel information.
-
-This project demonstrates the complete machine learning workflow, including exploratory data analysis, data preprocessing, model training, and model comparison using multiple classification algorithms.
+An end-to-end machine learning project that predicts passenger survival on the Titanic using multiple classification algorithms. This project was later revisited after learning Feature Engineering to evaluate the impact of engineered features on model performance.
 
 ---
 
-## Project Overview
+## 📌 Project Overview
 
-The objective of this project is to build a classification model capable of predicting passenger survival using the Titanic dataset from Kaggle.
+The objective of this project is to predict whether a passenger survived the Titanic disaster using demographic and travel-related information.
 
-The project covers:
+The project follows a complete machine learning workflow:
 
 - Exploratory Data Analysis (EDA)
-- Data Cleaning
-- Missing Value Imputation
-- Categorical Feature Encoding
-- Train-Test Split
+- Data Cleaning & Preprocessing
+- Feature Engineering
 - Model Training
 - Model Evaluation
-- Model Comparison
+- Performance Comparison
 
 ---
 
-## Dataset
+## 📂 Dataset
 
-**Source:** Kaggle - Titanic: Machine Learning from Disaster
+**Source:** Kaggle – Titanic: Machine Learning from Disaster
 
-The dataset contains **891 passenger records** with features such as:
-
-- Passenger Class
-- Age
-- Sex
-- Fare
-- Number of Siblings/Spouses (SibSp)
-- Number of Parents/Children (Parch)
-- Embarkation Port
-- Survival Status (Target Variable)
+- Training Samples: **891**
+- Target Variable: **Survived**
 
 ---
 
-## Exploratory Data Analysis
+## 📊 Exploratory Data Analysis
 
-Some key observations:
+Some key observations from the dataset:
 
-- Total passengers: **891**
-- Total survivors: **342**
-- Female passengers had significantly higher survival rates than males.
-- First-class passengers had the highest survival rate.
-- The 20–30 age group contained the largest number of survivors.
-- Missing values identified:
-  - Cabin – 687
-  - Age – 177
-  - Embarked – 2
+- Female passengers had a significantly higher survival rate.
+- First-class passengers survived more frequently than passengers in lower classes.
+- The largest number of survivors were between **20–30 years** of age.
+- The **Cabin** feature contained a large number of missing values.
+- The **Age** feature also required imputation before model training.
 
 ---
 
-## Data Preprocessing
+## ⚙️ Data Preprocessing
 
-The following preprocessing steps were performed:
+The preprocessing pipeline included:
 
-### Missing Value Handling
-
-- Age → Median Imputation
-- Embarked → Most Frequent Value
-
-### Removed Columns
-
-- PassengerId
-- Name
-- Ticket
-- Cabin
-
-### Encoding
-
-One-Hot Encoding was applied to:
-
-- Sex
-- Embarked
-
-### Data Splitting
-
-The dataset was divided into training and testing sets using an 80:20 train-test split.
+- Median imputation for numerical features
+- Most-frequent imputation for categorical features
+- One-Hot Encoding
+- Scikit-learn Pipelines
+- ColumnTransformer for preprocessing
+- Train/Validation split (`random_state=42`)
 
 ---
 
-## Models Trained
+## 🔬 Feature Engineering
 
-Three machine learning models were trained and evaluated using identical preprocessing.
+After completing Kaggle's **Feature Engineering** course, I revisited the project and engineered several new features based on domain knowledge.
 
-| Model                    | Accuracy      |
-| ------------------------ | ------------- |
-| Logistic Regression      | **79.89%**    |
-| XGBoost Classifier       | **84.36%**    |
-| Random Forest Classifier | **84.92%** ⭐ |
+### Features Created
 
-Random Forest achieved the highest accuracy on the test set.
+- **FamilySize** = SibSp + Parch + 1
+- **IsAlone**
+- **Passenger Title** (extracted from Name)
+- **Deck** (extracted from Cabin)
+- **TicketGroup** (number of passengers sharing the same ticket)
 
----
-
-## Evaluation Metrics
-
-The models were evaluated using:
-
-- Accuracy
-- Confusion Matrix
-- Precision
-- Recall
-- F1-Score
-
-These metrics provide a more comprehensive evaluation than accuracy alone, especially for classification tasks.
+Instead of adding every engineered feature directly into the model, each feature (or feature combination) was evaluated independently to measure its impact on model performance.
 
 ---
 
-## Technologies Used
+## 🤖 Models Used
+
+- Logistic Regression
+- Random Forest Classifier
+- XGBoost Classifier
+
+---
+
+## 📈 Results
+
+### Baseline Model Performance
+
+| Model               | Accuracy |
+| ------------------- | -------: |
+| Logistic Regression |    79.9% |
+| Random Forest       |    84.9% |
+| XGBoost             |    84.4% |
+
+---
+
+### Feature Engineering Experiments
+
+| Engineered Features         | Random Forest |       XGBoost |
+| --------------------------- | ------------: | ------------: |
+| FamilySize                  |         84.9% |             — |
+| FamilySize + IsAlone        |    **85.47%** |        84.35% |
+| Deck                        |             — |    **86.00%** |
+| FamilySize + IsAlone + Deck |             — | **86.59%** ⭐ |
+
+---
+
+## 💡 Key Findings
+
+- **FamilySize** alone did not improve Random Forest performance.
+- Combining **FamilySize** and **IsAlone** improved Random Forest accuracy from **84.9%** to **85.47%**.
+- The engineered **Deck** feature significantly improved XGBoost performance.
+- Combining **Deck**, **FamilySize**, and **IsAlone** produced the best XGBoost accuracy of **86.59%**.
+- Passenger **Title** and **TicketGroup** did not improve validation accuracy and were excluded from the final XGBoost feature set.
+
+---
+
+## 🛠️ Technologies Used
 
 - Python
 - Pandas
 - NumPy
-- Matplotlib
-- Seaborn
 - Scikit-learn
 - XGBoost
-- Jupyter Notebook
+- Matplotlib
+- Seaborn
 
 ---
 
-## Skills Demonstrated
+## 📚 Skills Demonstrated
 
 - Exploratory Data Analysis (EDA)
 - Data Cleaning
 - Missing Value Imputation
+- Feature Engineering
 - One-Hot Encoding
 - Machine Learning Pipelines
-- Logistic Regression
-- Random Forest
-- XGBoost
-- Classification Metrics
-- Confusion Matrix Interpretation
-- Model Comparison
-
----
-
-## Project Structure
-
-```
-Titanic-Survival-Prediction/
-│
-├── data/
-│   ├── train.csv
-│   └── test.csv
-│
-├── notebooks/
-│   ├── 01_eda.ipynb
-│   └── 02_preprocessing_and_models.ipynb
-│
-├── README.md
-└── requirements.txt
-```
-
----
-
-## Future Improvements
-
-This project represents the baseline implementation.
-
-Planned improvements include:
-
-- Feature Engineering (Family Size, IsAlone, Passenger Title, Deck Extraction)
+- Model Evaluation
+- Classification
 - Hyperparameter Tuning
-- Cross-Validation
-- Model Explainability using Feature Importance
-- Final model optimization after feature engineering
+- Comparative Model Analysis
 
 ---
 
-## Results
+## 🎯 What I Learned
 
-Among the baseline models, **Random Forest Classifier** achieved the highest accuracy (**84.92%**) while maintaining strong precision and recall. Future iterations of the project will focus on feature engineering and model optimization to further improve predictive performance.
+This project reinforced several important machine learning concepts:
+
+- Feature engineering should be driven by domain knowledge rather than guesswork.
+- Every engineered feature should be validated experimentally before being retained.
+- Different machine learning algorithms respond differently to engineered features.
+- Proper preprocessing pipelines help prevent data leakage and improve reproducibility.
+- Small improvements in feature representation can significantly improve model performance.
+
+---
+
+## 🚀 Future Improvements
+
+- Perform hyperparameter optimization using GridSearchCV or Optuna.
+- Experiment with ensemble methods.
+- Perform feature importance analysis using SHAP.
+- Train using stratified cross-validation for more robust evaluation.
